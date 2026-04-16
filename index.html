@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="تقرير التحويلات" />
+<meta name="theme-color" content="#0f172a" />
+<meta name="color-scheme" content="dark light" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<title>تقرير التحويلات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-1: #0f172a;
+    --bg-2: #1e293b;
+    --card: #ffffff;
+    --card-alt: #f8fafc;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #0ea5e9;
+    --accent-2: #0284c7;
+    --success: #10b981;
+    --danger: #ef4444;
+    --border: #e2e8f0;
+    --shadow: 0 10px 30px rgba(2, 6, 23, .18);
+
+    /* safe-area insets */
+    --sai-top: env(safe-area-inset-top);
+    --sai-bottom: env(safe-area-inset-bottom);
+    --sai-left: env(safe-area-inset-left);
+    --sai-right: env(safe-area-inset-right);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  html, body {
+    margin: 0; padding: 0;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+  }
+  body {
+    font-family: 'Cairo', 'Tajawal', system-ui, -apple-system, sans-serif;
+    background:
+      radial-gradient(900px 500px at 100% -10%, #1e3a8a 0%, transparent 55%),
+      radial-gradient(800px 400px at -10% 20%, #0c4a6e 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    background-attachment: fixed;
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding:
+      calc(16px + var(--sai-top))
+      calc(16px + var(--sai-right))
+      calc(120px + var(--sai-bottom))
+      calc(16px + var(--sai-left));
+  }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; gap: 12px; } }
+
+  header {
+    grid-column: 1 / -1;
+    color: #e2e8f0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 4px 4px 2px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: clamp(18px, 5vw, 24px);
+    font-weight: 900;
+  }
+  header .sub { color: #94a3b8; font-size: 12px; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; }
+  .logo .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 6px rgba(14,165,233,.15);
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .card > h2 {
+    margin: 0 0 12px;
+    font-size: 17px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .badge {
+    font-size: 11px; color: #fff; background: var(--accent);
+    padding: 3px 8px; border-radius: 999px; font-weight: 700;
+  }
+
+  .step {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 14px 12px;
+    margin-bottom: 12px;
+    background: var(--card-alt);
+    position: relative;
+  }
+  .step::before {
+    content: attr(data-step);
+    position: absolute; top: -12px; right: 14px;
+    background: var(--accent); color: #fff;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px;
+    box-shadow: 0 4px 10px rgba(14,165,233,.35);
+  }
+  .step h3 {
+    margin: 2px 40px 10px 0;
+    font-size: 15px; font-weight: 800;
+  }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; gap: 10px; } }
+
+  label {
+    display: block; font-size: 13px; color: var(--muted);
+    margin-bottom: 6px; font-weight: 600;
+  }
+  input[type="number"], input[type="text"], input[type="date"] {
+    width: 100%;
+    padding: 14px 14px;           /* bigger touch target */
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 16px;              /* prevent iOS zoom on focus */
+    font-family: inherit;
+    background: #fff; color: var(--text);
+    transition: border-color .15s, box-shadow .15s;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 48px;
+  }
+  input[type="number"] { inputmode: decimal; }
+  input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(14,165,233,.15);
+  }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+  .sub-item {
+    background: #fff;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .sub-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px; gap: 10px;
+  }
+  .sub-title { font-weight: 700; font-size: 14px; }
+  .switch {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    user-select: none; font-size: 13px; color: var(--muted);
+    min-height: 32px; padding: 2px 0;
+  }
+  .switch input {
+    appearance: none; width: 42px; height: 24px;
+    background: #cbd5e1; border-radius: 999px;
+    position: relative; cursor: pointer;
+    transition: background .15s;
+    flex-shrink: 0;
+  }
+  .switch input:checked { background: var(--accent); }
+  .switch input::after {
+    content: ""; width: 18px; height: 18px; background: #fff;
+    border-radius: 50%; position: absolute; top: 3px; right: 3px;
+    transition: right .15s;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  }
+  .switch input:checked::after { right: 21px; }
+
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+  button {
+    font-family: inherit;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 0; cursor: pointer;
+    font-weight: 700; font-size: 15px;
+    min-height: 48px;
+    touch-action: manipulation;
+    transition: transform .06s, box-shadow .15s, background .15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff; box-shadow: 0 6px 16px rgba(14,165,233,.35);
+    flex: 1 1 auto;
+  }
+  .btn-secondary { background: #e2e8f0; color: var(--text); }
+  .btn-ghost { background: transparent; color: var(--muted); }
+  button:active { transform: translateY(1px); }
+
+  .report-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px; gap: 8px; flex-wrap: wrap;
+  }
+  .report-head .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .report {
+    background: #0b1220; color: #e2e8f0; border-radius: 14px;
+    padding: 16px; font-family: 'Tajawal', 'Cairo', monospace;
+    font-size: 15px; line-height: 1.9;
+    white-space: pre-wrap; word-break: break-word;
+    min-height: 260px;
+    border: 1px solid #1f2937; direction: rtl;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+  .kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  @media (max-width: 380px) { .kpi { grid-template-columns: 1fr; } }
+  .kpi .box {
+    background: var(--card-alt); border: 1px solid var(--border);
+    border-radius: 12px; padding: 10px 12px;
+  }
+  .kpi .label { font-size: 11px; color: var(--muted); }
+  .kpi .value { font-weight: 800; font-size: 15px; margin-top: 2px; }
+  .error {
+    color: var(--danger); font-size: 13px; margin-top: 8px; min-height: 18px;
+  }
+  .copy-toast {
+    position: fixed;
+    bottom: calc(90px + var(--sai-bottom));
+    left: 50%; transform: translateX(-50%);
+    background: #111827; color: #fff;
+    padding: 10px 16px; border-radius: 999px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    font-size: 14px; z-index: 200;
+  }
+  .copy-toast.show {
+    opacity: 1; transform: translateX(-50%) translateY(-4px);
+  }
+
+  details {
+    background: #fff; border-radius: 12px; border: 1px solid var(--border);
+    padding: 10px 12px; margin-top: 12px;
+  }
+  details summary {
+    cursor: pointer; font-weight: 700; color: var(--muted);
+    padding: 6px 0;
+  }
+  table.breakdown {
+    width: 100%; border-collapse: collapse; margin-top: 8px;
+    font-size: 13px; display: block; overflow-x: auto; white-space: nowrap;
+  }
+  table.breakdown th, table.breakdown td {
+    padding: 8px; border-bottom: 1px solid var(--border); text-align: right;
+  }
+  table.breakdown th { color: var(--muted); font-weight: 600; }
+  .tag {
+    display: inline-block; font-size: 11px; color: #0369a1;
+    background: #e0f2fe; padding: 2px 8px; border-radius: 999px;
+    margin-inline-start: 6px;
+  }
+  .sum-indicator {
+    display: flex; gap: 8px; align-items: center; margin-top: 8px;
+    font-size: 13px; color: var(--muted); flex-wrap: wrap;
+  }
+  .sum-indicator.ok { color: var(--success); }
+  .sum-indicator.bad { color: var(--danger); }
+
+  /* Sticky bottom action bar for mobile */
+  .mobile-bar {
+    display: none;
+    position: fixed; left: 0; right: 0;
+    bottom: 0;
+    padding: 10px calc(12px + var(--sai-right)) calc(10px + var(--sai-bottom)) calc(12px + var(--sai-left));
+    background: rgba(15, 23, 42, .92);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-top: 1px solid rgba(255,255,255,.08);
+    gap: 8px; z-index: 150;
+  }
+  .mobile-bar button { flex: 1; min-height: 50px; }
+  @media (max-width: 900px) { .mobile-bar { display: flex; } }
+
+  /* PWA / standalone mode extra polish */
+  @media (display-mode: standalone) {
+    header { padding-top: 6px; }
+  }
+
+  /* Install hint banner (shown once on iOS Safari the first visit) */
+  .ios-hint {
+    display: none;
+    grid-column: 1 / -1;
+    background: rgba(14,165,233,.15);
+    color: #e2e8f0;
+    border: 1px solid rgba(14,165,233,.35);
+    border-radius: 14px;
+    padding: 10px 12px;
+    font-size: 13px;
+    gap: 10px; align-items: center; justify-content: space-between;
+  }
+  .ios-hint.show { display: flex; }
+  .ios-hint button { background: transparent; color: #e2e8f0; padding: 6px 10px; min-height: 32px; font-size: 13px; border: 1px solid rgba(255,255,255,.2); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <span class="dot"></span>
+        <h1>تقرير التحويلات</h1>
+      </div>
+      <div class="sub">خطوة بخطوة</div>
+    </header>
+
+    <div class="ios-hint" id="ios-hint">
+      <span>لتثبيته كتطبيق: اضغط زر المشاركة ⎘ في سفاري ثم "إضافة إلى الشاشة الرئيسية"</span>
+      <button id="ios-hint-close">حسنًا</button>
+    </div>
+
+    <!-- FORM CARD -->
+    <section class="card">
+      <h2>المدخلات <span class="badge">خطوات متتالية</span></h2>
+
+      <!-- STEP 1 -->
+      <div class="step" data-step="1">
+        <h3>التاريخ وسعر الصرف</h3>
+        <div class="row">
+          <div>
+            <label for="date">التاريخ</label>
+            <input type="date" id="date" />
+          </div>
+          <div>
+            <label for="rate">سعر الصرف (مثل 153.75)</label>
+            <input type="number" id="rate" step="0.01" inputmode="decimal" placeholder="153.75" value="153.75" />
+            <div class="hint">يُضرب × 10 داخليًا (153.75 = 1537.5 لكل دولار)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step" data-step="2">
+        <h3>المبلغ الكلي وحصة كل شراكة (دولار)</h3>
+        <div>
+          <label for="total">المبلغ الكلي للتحويل (دولار)</label>
+          <input type="number" id="total" step="1" inputmode="numeric" placeholder="8300" />
+          <div class="hint">اختياري — إذا تُرك فارغًا يُحسب من مجموع الأقسام</div>
+        </div>
+
+        <div class="sub-item">
+          <div class="sub-head">
+            <div class="sub-title">الشراكة العمانية</div>
+            <label class="switch"><input type="checkbox" id="en-oman" checked /><span>تفعيل</span></label>
+          </div>
+          <label for="oman-usd">المبلغ (دولار)</label>
+          <input type="number" id="oman-usd" step="1" inputmode="numeric" placeholder="3800" />
+        </div>
+
+        <div class="sub-item">
+          <div class="sub-head">
+            <div class="sub-title">الشراكة العراقية — محفظة الإعلان</div>
+            <label class="switch"><input type="checkbox" id="en-ad" checked /><span>تفعيل</span></label>
+          </div>
+          <label for="ad-usd">المبلغ (دولار)</label>
+          <input type="number" id="ad-usd" step="1" inputmode="numeric" placeholder="2000" />
+        </div>
+
+        <div class="sub-item">
+          <div class="sub-head">
+            <div class="sub-title">الشراكة العراقية — مستحق نقدي</div>
+            <label class="switch"><input type="checkbox" id="en-cash" checked /><span>تفعيل</span></label>
+          </div>
+          <label for="cash-usd">المبلغ (دولار)</label>
+          <input type="number" id="cash-usd" step="1" inputmode="numeric" placeholder="2500" />
+        </div>
+
+        <div class="sum-indicator" id="sum-ind">
+          <span>مجموع الأقسام: <b id="sum-val">0</b>$ • الإجمالي المدخل: <b id="tot-val">0</b>$</span>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step" data-step="3">
+        <h3>العمولة الكلية (دولار)</h3>
+        <label for="com-usd">العمولة الكلية بالدولار</label>
+        <input type="number" id="com-usd" step="0.01" inputmode="decimal" placeholder="158" />
+        <div class="hint">تُوزّع على الشراكات بالدينار حسب حصة كل شراكة</div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step" data-step="4">
+        <h3>مصاريف أخرى (دينار) <span class="tag">حسب نسبة المبلغ</span></h3>
+        <label for="extra">المصاريف الأخرى بالدينار</label>
+        <input type="number" id="extra" step="1000" inputmode="numeric" placeholder="10000" value="0" />
+        <div class="hint">مثل أجور النقل — تُضاف إلى عمولة كل شراكة حسب حصتها</div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step" data-step="5">
+        <h3>توليد التقرير</h3>
+        <div class="error" id="err"></div>
+        <div class="btns">
+          <button class="btn-primary" id="gen">توليد التقرير</button>
+          <button class="btn-secondary" id="fill-example">تعبئة مثال</button>
+          <button class="btn-ghost" id="reset">تصفير</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORT CARD -->
+    <section class="card report-card">
+      <div class="report-head">
+        <h2 style="margin:0">التقرير</h2>
+        <div class="actions">
+          <button class="btn-secondary" id="copy">نسخ</button>
+          <button class="btn-secondary" id="share">مشاركة</button>
+          <button class="btn-secondary" id="download">تحميل</button>
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="box"><div class="label">إجمالي الدولار</div><div class="value" id="k-total">—</div></div>
+        <div class="box"><div class="label">العمولة (دينار)</div><div class="value" id="k-com">—</div></div>
+        <div class="box"><div class="label">الإجمالي (دينار)</div><div class="value" id="k-iqd">—</div></div>
+      </div>
+
+      <pre class="report" id="report">سيظهر التقرير هنا بعد إدخال القيم والضغط على "توليد التقرير".</pre>
+
+      <details>
+        <summary>تفصيل توزيع العمولة والمصاريف</summary>
+        <table class="breakdown" id="bk">
+          <thead>
+            <tr>
+              <th>الشراكة</th><th>الدولار</th><th>النسبة</th>
+              <th>العمولة $</th><th>العمولة د.ع</th>
+              <th>المصاريف د.ع</th><th>النهائية د.ع</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </details>
+    </section>
+  </div>
+
+  <!-- Sticky mobile action bar -->
+  <div class="mobile-bar">
+    <button class="btn-primary" id="m-gen">توليد التقرير</button>
+    <button class="btn-secondary" id="m-copy">نسخ</button>
+  </div>
+
+  <div class="copy-toast" id="toast">تم النسخ</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => {
+    const v = parseFloat($(id).value);
+    return isNaN(v) ? 0 : v;
+  };
+  const fmt = (n) => {
+    if (n === undefined || n === null || isNaN(n)) return "0";
+    const rounded = Math.round(n);
+    return rounded.toLocaleString('en-US').replace(/,/g, '،');
+  };
+  const round1k = (n) => Math.round(n / 1000) * 1000;
+  const fmtUsd = (n) => fmt(n);
+  const fmtIqd = (n) => fmt(round1k(n));
+
+  function todayISO() {
+    const d = new Date();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+  function formatDateDisplay(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-').map(Number);
+    return `${d}/${m}/${y}`;
+  }
+
+  $('date').value = todayISO();
+
+  $('fill-example').addEventListener('click', () => {
+    $('date').value = '2026-04-05';
+    $('rate').value = 153.75;
+    $('total').value = 8300;
+    $('en-oman').checked = true; $('oman-usd').value = 3800;
+    $('en-ad').checked = true;   $('ad-usd').value = 2000;
+    $('en-cash').checked = true; $('cash-usd').value = 2500;
+    $('com-usd').value = 158;
+    $('extra').value = 0;
+    generate();
+  });
+
+  $('reset').addEventListener('click', () => {
+    ['total','oman-usd','ad-usd','cash-usd','com-usd','extra'].forEach(id => $(id).value = '');
+    $('extra').value = 0;
+    $('rate').value = 153.75;
+    $('date').value = todayISO();
+    $('en-oman').checked = $('en-ad').checked = $('en-cash').checked = true;
+    $('report').textContent = 'سيظهر التقرير هنا بعد إدخال القيم والضغط على "توليد التقرير".';
+    $('k-total').textContent = '—';
+    $('k-com').textContent = '—';
+    $('k-iqd').textContent = '—';
+    $('bk').querySelector('tbody').innerHTML = '';
+    $('err').textContent = '';
+    updateSumIndicator();
+  });
+
+  function compute() {
+    const rate = num('rate');
+    const rateReal = rate * 10;
+    const comUsd  = num('com-usd');
+    const extra   = num('extra');
+
+    const segments = [];
+    if ($('en-oman').checked) segments.push({ key:'oman', label:'الشراكة العمانية', usd:num('oman-usd') });
+    if ($('en-ad').checked)   segments.push({ key:'ad',   label:'محفظة الإعلان',     usd:num('ad-usd') });
+    if ($('en-cash').checked) segments.push({ key:'cash', label:'مستحق نقدي',        usd:num('cash-usd') });
+
+    let totalUsd = num('total');
+    const sumUsd = segments.reduce((a, s) => a + s.usd, 0);
+    if (!totalUsd) totalUsd = sumUsd;
+
+    segments.forEach(s => {
+      s.share              = sumUsd > 0 ? s.usd / sumUsd : 0;
+      s.commissionUsd      = comUsd * s.share;
+      s.commissionIqd      = s.commissionUsd * rateReal;
+      s.extraShareIqd      = extra * s.share;
+      s.commissionFinalIqd = s.commissionIqd + s.extraShareIqd;
+      s.iqdNoCom           = s.usd * rateReal;
+      s.iqdWithCom         = s.iqdNoCom + s.commissionFinalIqd;
+    });
+
+    return { rate, rateReal, comUsd, extra, totalUsd, sumUsd, segments };
+  }
+
+  function validate(data) {
+    const errs = [];
+    if (!data.rate) errs.push('سعر الصرف مطلوب');
+    if (!data.segments.length) errs.push('فعّل قسمًا واحدًا على الأقل');
+    data.segments.forEach(s => { if (s.usd <= 0) errs.push(`أدخل مبلغ "${s.label}"`); });
+    if (data.totalUsd && data.sumUsd && Math.abs(data.totalUsd - data.sumUsd) > 0.5) {
+      errs.push(`المجموع (${fmt(data.sumUsd)}$) ≠ الإجمالي (${fmt(data.totalUsd)}$)`);
+    }
+    return errs;
+  }
+
+  function buildReport(data) {
+    const dateStr = formatDateDisplay($('date').value);
+    const sep = '______';
+    const lines = [];
+
+    lines.push(`تحويلات ${dateStr}`);
+    lines.push(`سعر الصرف ${data.rate}`);
+    lines.push(`*${fmtUsd(data.totalUsd)} دولار *`);
+    lines.push(sep);
+
+    const oman = data.segments.find(s => s.key === 'oman');
+    if (oman) {
+      lines.push('*الشراكة العمانية *');
+      lines.push(`${fmtUsd(oman.usd)} دولار `);
+      lines.push(`العمولة ${fmtIqd(oman.commissionFinalIqd)} دينار `);
+      lines.push('الاجمالي بالدينار :');
+      lines.push(`${fmtIqd(oman.iqdWithCom)} دينار `);
+      lines.push(sep);
+    }
+
+    const ad = data.segments.find(s => s.key === 'ad');
+    const cash = data.segments.find(s => s.key === 'cash');
+    if (ad || cash) {
+      lines.push('الشراكة العراقية');
+      if (ad) {
+        lines.push('*محفظة الاعلان *');
+        lines.push(`${fmtUsd(ad.usd)} دولار =`);
+        lines.push(`${fmtIqd(ad.iqdNoCom)} (بدون عمولة)`);
+        lines.push(`العمولة ${fmtIqd(ad.commissionFinalIqd)} دينار`);
+        lines.push('الاجمالي مع العمولة ');
+        lines.push(`${fmtIqd(ad.iqdWithCom)} دينار`);
+      }
+      if (cash) {
+        lines.push('*مستحق نقدي *');
+        lines.push(`${fmtUsd(cash.usd)} دولار =`);
+        lines.push(`${fmtIqd(cash.iqdNoCom)} (بدون عمولة)`);
+        lines.push(`العمولة ${fmtIqd(cash.commissionFinalIqd)} دينار`);
+        lines.push('الاجمالي مع العمولة ');
+        lines.push(`${fmtIqd(cash.iqdWithCom)} دينار`);
+      }
+    }
+    return lines.join('\n');
+  }
+
+  function renderKPI(data) {
+    const totalCom = data.segments.reduce((a, s) => a + s.commissionFinalIqd, 0);
+    const totalIqd = data.segments.reduce((a, s) => a + s.iqdWithCom, 0);
+    $('k-total').textContent = fmtUsd(data.totalUsd) + ' $';
+    $('k-com').textContent   = fmtIqd(totalCom);
+    $('k-iqd').textContent   = fmtIqd(totalIqd);
+  }
+
+  function renderBreakdown(data) {
+    const tbody = $('bk').querySelector('tbody');
+    tbody.innerHTML = '';
+    data.segments.forEach(s => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.label}</td>
+        <td>${fmtUsd(s.usd)}</td>
+        <td>${(s.share * 100).toFixed(2)}%</td>
+        <td>${s.commissionUsd.toFixed(2)}</td>
+        <td>${fmtIqd(s.commissionIqd)}</td>
+        <td>${fmtIqd(s.extraShareIqd)}</td>
+        <td>${fmtIqd(s.commissionFinalIqd)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function updateSumIndicator() {
+    const sum = ($('en-oman').checked ? num('oman-usd') : 0)
+              + ($('en-ad').checked   ? num('ad-usd')   : 0)
+              + ($('en-cash').checked ? num('cash-usd') : 0);
+    const tot = num('total');
+    $('sum-val').textContent = fmtUsd(sum);
+    $('tot-val').textContent = fmtUsd(tot);
+    const ind = $('sum-ind');
+    ind.classList.remove('ok','bad');
+    if (tot && sum && Math.abs(sum - tot) < 0.5) ind.classList.add('ok');
+    else if (tot && sum) ind.classList.add('bad');
+  }
+
+  function generate() {
+    const data = compute();
+    const errs = validate(data);
+    $('err').textContent = errs.join(' • ');
+    if (errs.length) {
+      $('report').textContent = 'يوجد أخطاء — راجع المدخلات.';
+      return;
+    }
+    $('report').textContent = buildReport(data);
+    renderKPI(data);
+    renderBreakdown(data);
+    // Scroll to report on mobile
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      $('report').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  $('gen').addEventListener('click', generate);
+  $('m-gen').addEventListener('click', generate);
+
+  // Toast + copy/share/download
+  function showToast(msg) {
+    const t = $('toast'); t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1400);
+  }
+  async function copyReport() {
+    const txt = $('report').textContent;
+    if (!txt || txt.startsWith('سيظهر') || txt.startsWith('يوجد')) {
+      showToast('لا يوجد تقرير للنسخ'); return;
+    }
+    try { await navigator.clipboard.writeText(txt); showToast('تم النسخ ✓'); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+      showToast('تم النسخ');
+    }
+  }
+  $('copy').addEventListener('click', copyReport);
+  $('m-copy').addEventListener('click', copyReport);
+
+  // Native share (iOS supports this)
+  $('share').addEventListener('click', async () => {
+    const txt = $('report').textContent;
+    if (!txt || txt.startsWith('سيظهر') || txt.startsWith('يوجد')) {
+      showToast('لا يوجد تقرير للمشاركة'); return;
+    }
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'تقرير التحويلات', text: txt });
+      } catch {}
+    } else {
+      copyReport();
+    }
+  });
+
+  $('download').addEventListener('click', () => {
+    const txt = $('report').textContent;
+    if (!txt || txt.startsWith('سيظهر') || txt.startsWith('يوجد')) {
+      showToast('لا يوجد تقرير للتحميل'); return;
+    }
+    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const d = $('date').value || todayISO();
+    a.href = url; a.download = `تحويلات-${d}.txt`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  // Live update
+  const liveIds = ['rate','total','com-usd','extra','oman-usd','ad-usd','cash-usd'];
+  liveIds.forEach(id => $(id).addEventListener('input', () => {
+    updateSumIndicator();
+    if (!$('report').textContent.startsWith('سيظهر') && !$('report').textContent.startsWith('يوجد')) generate();
+  }));
+  ['en-oman','en-ad','en-cash'].forEach(id => $(id).addEventListener('change', () => {
+    updateSumIndicator();
+    if (!$('report').textContent.startsWith('سيظهر') && !$('report').textContent.startsWith('يوجد')) generate();
+  }));
+
+  updateSumIndicator();
+
+  // iOS "Add to Home Screen" hint: show once per device
+  try {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.navigator.standalone === true
+      || window.matchMedia('(display-mode: standalone)').matches;
+    if (isIOS && !isStandalone && !localStorage.getItem('iosHintDismissed')) {
+      $('ios-hint').classList.add('show');
+    }
+    $('ios-hint-close').addEventListener('click', () => {
+      $('ios-hint').classList.remove('show');
+      try { localStorage.setItem('iosHintDismissed', '1'); } catch {}
+    });
+  } catch {}
+</script>
+</body>
+</html>
