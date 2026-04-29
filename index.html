@@ -53,10 +53,11 @@
     color: var(--text);
     min-height: 100vh;
     min-height: 100dvh;
+    font-size: 16px;
     padding:
       calc(16px + var(--sai-top))
       calc(16px + var(--sai-right))
-      calc(120px + var(--sai-bottom))
+      calc(130px + var(--sai-bottom))
       calc(16px + var(--sai-left));
   }
 
@@ -77,13 +78,13 @@
   }
   header h1 {
     margin: 0;
-    font-size: clamp(18px, 5vw, 24px);
+    font-size: clamp(20px, 5.5vw, 26px);
     font-weight: 900;
   }
-  header .sub { color: #94a3b8; font-size: 12px; }
+  header .sub { color: #94a3b8; font-size: 13px; }
   .logo { display: inline-flex; align-items: center; gap: 10px; }
   .logo .dot {
-    width: 10px; height: 10px; border-radius: 50%;
+    width: 11px; height: 11px; border-radius: 50%;
     background: var(--accent);
     box-shadow: 0 0 0 6px rgba(14,165,233,.15);
   }
@@ -92,86 +93,108 @@
     background: var(--card);
     border-radius: 18px;
     box-shadow: var(--shadow);
-    padding: 16px;
+    padding: 18px;
     border: 1px solid var(--border);
   }
   .card > h2 {
-    margin: 0 0 12px;
-    font-size: 17px;
+    margin: 0 0 14px;
+    font-size: 19px;
     display: flex; align-items: center; gap: 8px;
   }
   .badge {
-    font-size: 11px; color: #fff; background: var(--accent);
-    padding: 3px 8px; border-radius: 999px; font-weight: 700;
+    font-size: 12px; color: #fff; background: var(--accent);
+    padding: 4px 10px; border-radius: 999px; font-weight: 700;
   }
 
   .step {
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 14px 14px 12px;
-    margin-bottom: 12px;
+    padding: 16px 16px 14px;
+    margin-bottom: 14px;
     background: var(--card-alt);
     position: relative;
   }
   .step::before {
     content: attr(data-step);
-    position: absolute; top: -12px; right: 14px;
+    position: absolute; top: -14px; right: 14px;
     background: var(--accent); color: #fff;
-    width: 28px; height: 28px; border-radius: 50%;
+    width: 32px; height: 32px; border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 13px;
+    font-weight: 800; font-size: 14px;
     box-shadow: 0 4px 10px rgba(14,165,233,.35);
   }
   .step h3 {
-    margin: 2px 40px 10px 0;
-    font-size: 15px; font-weight: 800;
+    margin: 2px 44px 12px 0;
+    font-size: 17px; font-weight: 800;
   }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media (max-width: 560px) { .row { grid-template-columns: 1fr; gap: 10px; } }
 
   label {
-    display: block; font-size: 13px; color: var(--muted);
-    margin-bottom: 6px; font-weight: 600;
+    display: block; font-size: 14px; color: var(--muted);
+    margin-bottom: 7px; font-weight: 600;
   }
   input[type="number"], input[type="text"], input[type="date"] {
     width: 100%;
-    padding: 14px 14px;           /* bigger touch target */
+    padding: 16px 14px;           /* bigger touch target */
     border-radius: 12px;
     border: 1px solid var(--border);
-    font-size: 16px;              /* prevent iOS zoom on focus */
+    font-size: 17px;              /* prevent iOS zoom on focus */
     font-family: inherit;
     background: #fff; color: var(--text);
     transition: border-color .15s, box-shadow .15s;
     -webkit-appearance: none;
     appearance: none;
-    min-height: 48px;
+    min-height: 52px;
   }
   input[type="number"] { inputmode: decimal; }
   input:focus {
     outline: none; border-color: var(--accent);
     box-shadow: 0 0 0 4px rgba(14,165,233,.15);
   }
-  .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
 
   .sub-item {
+    background: #fff;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 12px;
+  }
+  .sub-item.parent-group {
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    padding: 14px 14px 10px;
+  }
+  .sub-item.parent-group > .parent-title {
+    font-weight: 800; font-size: 16px; color: var(--text);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sub-item.parent-group > .parent-title::before {
+    content: ""; width: 5px; height: 18px; border-radius: 3px;
+    background: var(--accent);
+  }
+  .sub-nested {
     background: #fff;
     border: 1px dashed var(--border);
     border-radius: 12px;
     padding: 12px;
     margin-top: 10px;
   }
+  .sub-nested:first-of-type { margin-top: 4px; }
   .sub-head {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 10px; gap: 10px;
   }
-  .sub-title { font-weight: 700; font-size: 14px; }
+  .sub-title { font-weight: 700; font-size: 15px; }
   .switch {
     display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
-    user-select: none; font-size: 13px; color: var(--muted);
-    min-height: 32px; padding: 2px 0;
+    user-select: none; font-size: 14px; color: var(--muted);
+    min-height: 36px; padding: 2px 0;
   }
   .switch input {
-    appearance: none; width: 42px; height: 24px;
+    appearance: none; width: 46px; height: 26px;
     background: #cbd5e1; border-radius: 999px;
     position: relative; cursor: pointer;
     transition: background .15s;
@@ -179,21 +202,21 @@
   }
   .switch input:checked { background: var(--accent); }
   .switch input::after {
-    content: ""; width: 18px; height: 18px; background: #fff;
+    content: ""; width: 20px; height: 20px; background: #fff;
     border-radius: 50%; position: absolute; top: 3px; right: 3px;
     transition: right .15s;
     box-shadow: 0 2px 4px rgba(0,0,0,.2);
   }
-  .switch input:checked::after { right: 21px; }
+  .switch input:checked::after { right: 23px; }
 
-  .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
   button {
     font-family: inherit;
-    padding: 14px 18px;
+    padding: 16px 22px;
     border-radius: 12px;
     border: 0; cursor: pointer;
-    font-weight: 700; font-size: 15px;
-    min-height: 48px;
+    font-weight: 700; font-size: 16px;
+    min-height: 54px;
     touch-action: manipulation;
     transition: transform .06s, box-shadow .15s, background .15s;
     -webkit-appearance: none;
@@ -215,34 +238,34 @@
   .report-head .actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .report {
     background: #0b1220; color: #e2e8f0; border-radius: 14px;
-    padding: 16px; font-family: 'Tajawal', 'Cairo', monospace;
-    font-size: 15px; line-height: 1.9;
+    padding: 18px; font-family: 'Tajawal', 'Cairo', monospace;
+    font-size: 16px; line-height: 2;
     white-space: pre-wrap; word-break: break-word;
-    min-height: 260px;
+    min-height: 280px;
     border: 1px solid #1f2937; direction: rtl;
     -webkit-user-select: text;
     user-select: text;
   }
-  .kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  .kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
   @media (max-width: 380px) { .kpi { grid-template-columns: 1fr; } }
   .kpi .box {
     background: var(--card-alt); border: 1px solid var(--border);
-    border-radius: 12px; padding: 10px 12px;
+    border-radius: 12px; padding: 12px 14px;
   }
-  .kpi .label { font-size: 11px; color: var(--muted); }
-  .kpi .value { font-weight: 800; font-size: 15px; margin-top: 2px; }
+  .kpi .label { font-size: 12px; color: var(--muted); }
+  .kpi .value { font-weight: 800; font-size: 16px; margin-top: 3px; }
   .error {
-    color: var(--danger); font-size: 13px; margin-top: 8px; min-height: 18px;
+    color: var(--danger); font-size: 14px; margin-top: 8px; min-height: 20px;
   }
   .copy-toast {
     position: fixed;
-    bottom: calc(90px + var(--sai-bottom));
+    bottom: calc(96px + var(--sai-bottom));
     left: 50%; transform: translateX(-50%);
     background: #111827; color: #fff;
-    padding: 10px 16px; border-radius: 999px;
+    padding: 11px 18px; border-radius: 999px;
     opacity: 0; pointer-events: none;
     transition: opacity .2s, transform .2s;
-    font-size: 14px; z-index: 200;
+    font-size: 15px; z-index: 200;
   }
   .copy-toast.show {
     opacity: 1; transform: translateX(-50%) translateY(-4px);
@@ -250,28 +273,28 @@
 
   details {
     background: #fff; border-radius: 12px; border: 1px solid var(--border);
-    padding: 10px 12px; margin-top: 12px;
+    padding: 12px 14px; margin-top: 14px;
   }
   details summary {
     cursor: pointer; font-weight: 700; color: var(--muted);
-    padding: 6px 0;
+    padding: 6px 0; font-size: 14px;
   }
   table.breakdown {
-    width: 100%; border-collapse: collapse; margin-top: 8px;
-    font-size: 13px; display: block; overflow-x: auto; white-space: nowrap;
+    width: 100%; border-collapse: collapse; margin-top: 10px;
+    font-size: 14px; display: block; overflow-x: auto; white-space: nowrap;
   }
   table.breakdown th, table.breakdown td {
-    padding: 8px; border-bottom: 1px solid var(--border); text-align: right;
+    padding: 9px; border-bottom: 1px solid var(--border); text-align: right;
   }
   table.breakdown th { color: var(--muted); font-weight: 600; }
   .tag {
-    display: inline-block; font-size: 11px; color: #0369a1;
-    background: #e0f2fe; padding: 2px 8px; border-radius: 999px;
+    display: inline-block; font-size: 12px; color: #0369a1;
+    background: #e0f2fe; padding: 3px 9px; border-radius: 999px;
     margin-inline-start: 6px;
   }
   .sum-indicator {
-    display: flex; gap: 8px; align-items: center; margin-top: 8px;
-    font-size: 13px; color: var(--muted); flex-wrap: wrap;
+    display: flex; gap: 8px; align-items: center; margin-top: 10px;
+    font-size: 14px; color: var(--muted); flex-wrap: wrap;
   }
   .sum-indicator.ok { color: var(--success); }
   .sum-indicator.bad { color: var(--danger); }
@@ -281,14 +304,14 @@
     display: none;
     position: fixed; left: 0; right: 0;
     bottom: 0;
-    padding: 10px calc(12px + var(--sai-right)) calc(10px + var(--sai-bottom)) calc(12px + var(--sai-left));
+    padding: 12px calc(12px + var(--sai-right)) calc(12px + var(--sai-bottom)) calc(12px + var(--sai-left));
     background: rgba(15, 23, 42, .92);
     backdrop-filter: saturate(180%) blur(14px);
     -webkit-backdrop-filter: saturate(180%) blur(14px);
     border-top: 1px solid rgba(255,255,255,.08);
-    gap: 8px; z-index: 150;
+    gap: 10px; z-index: 150;
   }
-  .mobile-bar button { flex: 1; min-height: 50px; }
+  .mobile-bar button { flex: 1; min-height: 56px; font-size: 16px; }
   @media (max-width: 900px) { .mobile-bar { display: flex; } }
 
   /* PWA / standalone mode extra polish */
@@ -304,12 +327,12 @@
     color: #e2e8f0;
     border: 1px solid rgba(14,165,233,.35);
     border-radius: 14px;
-    padding: 10px 12px;
-    font-size: 13px;
+    padding: 12px 14px;
+    font-size: 14px;
     gap: 10px; align-items: center; justify-content: space-between;
   }
   .ios-hint.show { display: flex; }
-  .ios-hint button { background: transparent; color: #e2e8f0; padding: 6px 10px; min-height: 32px; font-size: 13px; border: 1px solid rgba(255,255,255,.2); }
+  .ios-hint button { background: transparent; color: #e2e8f0; padding: 8px 12px; min-height: 36px; font-size: 14px; border: 1px solid rgba(255,255,255,.2); }
 </style>
 </head>
 <body>
@@ -349,26 +372,40 @@
 
       <!-- STEP 2 -->
       <div class="step" data-step="2">
-        <h3>المبلغ الكلي وحصة كل شراكة (دولار)</h3>
+        <h3>المبلغ الكلي وحصة كل فرع (دولار)</h3>
         <div>
           <label for="total">المبلغ الكلي للتحويل (دولار)</label>
           <input type="number" id="total" step="1" inputmode="numeric" placeholder="8300" />
           <div class="hint">اختياري — إذا تُرك فارغًا يُحسب من مجموع الأقسام</div>
         </div>
 
-        <div class="sub-item">
-          <div class="sub-head">
-            <div class="sub-title">الشراكة العمانية</div>
-            <label class="switch"><input type="checkbox" id="en-oman" checked /><span>تفعيل</span></label>
+        <!-- الشراكة العمانية: فرعا سوليدو وناتيرا -->
+        <div class="sub-item parent-group">
+          <div class="parent-title">الشراكة العمانية</div>
+
+          <div class="sub-nested">
+            <div class="sub-head">
+              <div class="sub-title">سوليدو</div>
+              <label class="switch"><input type="checkbox" id="en-solido" /><span>تفعيل</span></label>
+            </div>
+            <label for="solido-usd">المبلغ (دولار)</label>
+            <input type="number" id="solido-usd" step="1" inputmode="numeric" placeholder="2000" />
           </div>
-          <label for="oman-usd">المبلغ (دولار)</label>
-          <input type="number" id="oman-usd" step="1" inputmode="numeric" placeholder="3800" />
+
+          <div class="sub-nested">
+            <div class="sub-head">
+              <div class="sub-title">ناتيرا</div>
+              <label class="switch"><input type="checkbox" id="en-natira" /><span>تفعيل</span></label>
+            </div>
+            <label for="natira-usd">المبلغ (دولار)</label>
+            <input type="number" id="natira-usd" step="1" inputmode="numeric" placeholder="1800" />
+          </div>
         </div>
 
         <div class="sub-item">
           <div class="sub-head">
             <div class="sub-title">الشراكة العراقية — محفظة الإعلان</div>
-            <label class="switch"><input type="checkbox" id="en-ad" checked /><span>تفعيل</span></label>
+            <label class="switch"><input type="checkbox" id="en-ad" /><span>تفعيل</span></label>
           </div>
           <label for="ad-usd">المبلغ (دولار)</label>
           <input type="number" id="ad-usd" step="1" inputmode="numeric" placeholder="2000" />
@@ -377,7 +414,7 @@
         <div class="sub-item">
           <div class="sub-head">
             <div class="sub-title">الشراكة العراقية — مستحق نقدي</div>
-            <label class="switch"><input type="checkbox" id="en-cash" checked /><span>تفعيل</span></label>
+            <label class="switch"><input type="checkbox" id="en-cash" /><span>تفعيل</span></label>
           </div>
           <label for="cash-usd">المبلغ (دولار)</label>
           <input type="number" id="cash-usd" step="1" inputmode="numeric" placeholder="2500" />
@@ -393,15 +430,15 @@
         <h3>العمولة الكلية (دولار)</h3>
         <label for="com-usd">العمولة الكلية بالدولار</label>
         <input type="number" id="com-usd" step="0.01" inputmode="decimal" placeholder="158" />
-        <div class="hint">تُوزّع على الشراكات بالدينار حسب حصة كل شراكة</div>
+        <div class="hint">تُوزّع على الفروع بالدينار حسب حصة كل فرع من المبلغ</div>
       </div>
 
       <!-- STEP 4 -->
       <div class="step" data-step="4">
-        <h3>مصاريف أخرى (دينار) <span class="tag">حسب نسبة المبلغ</span></h3>
+        <h3>مصاريف أخرى (دينار) <span class="tag">بالتساوي بين الفروع</span></h3>
         <label for="extra">المصاريف الأخرى بالدينار</label>
         <input type="number" id="extra" step="1000" inputmode="numeric" placeholder="10000" value="0" />
-        <div class="hint">مثل أجور النقل — تُضاف إلى عمولة كل شراكة حسب حصتها</div>
+        <div class="hint">مثل أجور النقل — تُقسّم بالتساوي على الفروع المفعّلة التي قامت بالتحويل</div>
       </div>
 
       <!-- STEP 5 -->
@@ -440,7 +477,7 @@
         <table class="breakdown" id="bk">
           <thead>
             <tr>
-              <th>الشراكة</th><th>الدولار</th><th>النسبة</th>
+              <th>الفرع</th><th>الدولار</th><th>النسبة</th>
               <th>العمولة $</th><th>العمولة د.ع</th>
               <th>المصاريف د.ع</th><th>النهائية د.ع</th>
             </tr>
@@ -492,20 +529,21 @@
     $('date').value = '2026-04-05';
     $('rate').value = 153.75;
     $('total').value = 8300;
-    $('en-oman').checked = true; $('oman-usd').value = 3800;
-    $('en-ad').checked = true;   $('ad-usd').value = 2000;
-    $('en-cash').checked = true; $('cash-usd').value = 2500;
+    $('en-solido').checked = true; $('solido-usd').value = 2000;
+    $('en-natira').checked = true; $('natira-usd').value = 1800;
+    $('en-ad').checked = true;     $('ad-usd').value = 2000;
+    $('en-cash').checked = true;   $('cash-usd').value = 2500;
     $('com-usd').value = 158;
     $('extra').value = 0;
     generate();
   });
 
   $('reset').addEventListener('click', () => {
-    ['total','oman-usd','ad-usd','cash-usd','com-usd','extra'].forEach(id => $(id).value = '');
+    ['total','solido-usd','natira-usd','ad-usd','cash-usd','com-usd','extra'].forEach(id => $(id).value = '');
     $('extra').value = 0;
     $('rate').value = 153.75;
     $('date').value = todayISO();
-    $('en-oman').checked = $('en-ad').checked = $('en-cash').checked = true;
+    $('en-solido').checked = $('en-natira').checked = $('en-ad').checked = $('en-cash').checked = false;
     $('report').textContent = 'سيظهر التقرير هنا بعد إدخال القيم والضغط على "توليد التقرير".';
     $('k-total').textContent = '—';
     $('k-com').textContent = '—';
@@ -522,31 +560,37 @@
     const extra   = num('extra');
 
     const segments = [];
-    if ($('en-oman').checked) segments.push({ key:'oman', label:'الشراكة العمانية', usd:num('oman-usd') });
-    if ($('en-ad').checked)   segments.push({ key:'ad',   label:'محفظة الإعلان',     usd:num('ad-usd') });
-    if ($('en-cash').checked) segments.push({ key:'cash', label:'مستحق نقدي',        usd:num('cash-usd') });
+    if ($('en-solido').checked) segments.push({ key:'solido', label:'سوليدو',          group:'oman', usd:num('solido-usd') });
+    if ($('en-natira').checked) segments.push({ key:'natira', label:'ناتيرا',          group:'oman', usd:num('natira-usd') });
+    if ($('en-ad').checked)     segments.push({ key:'ad',     label:'محفظة الإعلان',   group:'iraq', usd:num('ad-usd') });
+    if ($('en-cash').checked)   segments.push({ key:'cash',   label:'مستحق نقدي',      group:'iraq', usd:num('cash-usd') });
 
     let totalUsd = num('total');
     const sumUsd = segments.reduce((a, s) => a + s.usd, 0);
     if (!totalUsd) totalUsd = sumUsd;
 
+    // عدد الفروع التي قامت بالتحويل (مفعّلة ولها مبلغ > 0)
+    const activeBranches = segments.filter(s => s.usd > 0);
+    const activeCount = activeBranches.length;
+    const extraPerBranch = activeCount > 0 ? (extra / activeCount) : 0;
+
     segments.forEach(s => {
       s.share              = sumUsd > 0 ? s.usd / sumUsd : 0;
-      s.commissionUsd      = comUsd * s.share;
-      s.commissionIqd      = s.commissionUsd * rateReal;
-      s.extraShareIqd      = extra * s.share;
-      s.commissionFinalIqd = s.commissionIqd + s.extraShareIqd;
+      s.commissionUsd      = comUsd * s.share;                             // العمولة بالدولار حسب نسبة المبلغ
+      s.commissionIqd      = s.commissionUsd * rateReal;                   // العمولة بالدينار
+      s.extraShareIqd      = s.usd > 0 ? extraPerBranch : 0;               // المصاريف الأخرى بالتساوي بين الفروع
+      s.commissionFinalIqd = s.commissionIqd + s.extraShareIqd;            // العمولة النهائية = عمولة + مصاريف
       s.iqdNoCom           = s.usd * rateReal;
       s.iqdWithCom         = s.iqdNoCom + s.commissionFinalIqd;
     });
 
-    return { rate, rateReal, comUsd, extra, totalUsd, sumUsd, segments };
+    return { rate, rateReal, comUsd, extra, totalUsd, sumUsd, segments, activeCount };
   }
 
   function validate(data) {
     const errs = [];
     if (!data.rate) errs.push('سعر الصرف مطلوب');
-    if (!data.segments.length) errs.push('فعّل قسمًا واحدًا على الأقل');
+    if (!data.segments.length) errs.push('فعّل فرعًا واحدًا على الأقل');
     data.segments.forEach(s => { if (s.usd <= 0) errs.push(`أدخل مبلغ "${s.label}"`); });
     if (data.totalUsd && data.sumUsd && Math.abs(data.totalUsd - data.sumUsd) > 0.5) {
       errs.push(`المجموع (${fmt(data.sumUsd)}$) ≠ الإجمالي (${fmt(data.totalUsd)}$)`);
@@ -557,6 +601,7 @@
   function buildReport(data) {
     const dateStr = formatDateDisplay($('date').value);
     const sep = '______';
+    const subSep = 'ـ ـ ـ ـ ـ';
     const lines = [];
 
     lines.push(`تحويلات ${dateStr}`);
@@ -564,16 +609,22 @@
     lines.push(`*${fmtUsd(data.totalUsd)} دولار *`);
     lines.push(sep);
 
-    const oman = data.segments.find(s => s.key === 'oman');
-    if (oman) {
+    // قسم الشراكة العمانية: سوليدو + ناتيرا
+    const omanSegs = data.segments.filter(s => s.group === 'oman');
+    if (omanSegs.length) {
       lines.push('*الشراكة العمانية *');
-      lines.push(`${fmtUsd(oman.usd)} دولار `);
-      lines.push(`العمولة ${fmtIqd(oman.commissionFinalIqd)} دينار `);
-      lines.push('الاجمالي بالدينار :');
-      lines.push(`${fmtIqd(oman.iqdWithCom)} دينار `);
+      omanSegs.forEach((s, i) => {
+        if (i > 0) lines.push(subSep);
+        lines.push(`*${s.label}*`);
+        lines.push(`${fmtUsd(s.usd)} دولار `);
+        lines.push(`العمولة ${fmtIqd(s.commissionFinalIqd)} دينار `);
+        lines.push('الاجمالي بالدينار :');
+        lines.push(`${fmtIqd(s.iqdWithCom)} دينار `);
+      });
       lines.push(sep);
     }
 
+    // قسم الشراكة العراقية
     const ad = data.segments.find(s => s.key === 'ad');
     const cash = data.segments.find(s => s.key === 'cash');
     if (ad || cash) {
@@ -587,6 +638,7 @@
         lines.push(`${fmtIqd(ad.iqdWithCom)} دينار`);
       }
       if (cash) {
+        if (ad) lines.push(subSep);
         lines.push('*مستحق نقدي *');
         lines.push(`${fmtUsd(cash.usd)} دولار =`);
         lines.push(`${fmtIqd(cash.iqdNoCom)} (بدون عمولة)`);
@@ -625,9 +677,10 @@
   }
 
   function updateSumIndicator() {
-    const sum = ($('en-oman').checked ? num('oman-usd') : 0)
-              + ($('en-ad').checked   ? num('ad-usd')   : 0)
-              + ($('en-cash').checked ? num('cash-usd') : 0);
+    const sum = ($('en-solido').checked ? num('solido-usd') : 0)
+              + ($('en-natira').checked ? num('natira-usd') : 0)
+              + ($('en-ad').checked     ? num('ad-usd')     : 0)
+              + ($('en-cash').checked   ? num('cash-usd')   : 0);
     const tot = num('total');
     $('sum-val').textContent = fmtUsd(sum);
     $('tot-val').textContent = fmtUsd(tot);
@@ -709,12 +762,12 @@
   });
 
   // Live update
-  const liveIds = ['rate','total','com-usd','extra','oman-usd','ad-usd','cash-usd'];
+  const liveIds = ['rate','total','com-usd','extra','solido-usd','natira-usd','ad-usd','cash-usd'];
   liveIds.forEach(id => $(id).addEventListener('input', () => {
     updateSumIndicator();
     if (!$('report').textContent.startsWith('سيظهر') && !$('report').textContent.startsWith('يوجد')) generate();
   }));
-  ['en-oman','en-ad','en-cash'].forEach(id => $(id).addEventListener('change', () => {
+  ['en-solido','en-natira','en-ad','en-cash'].forEach(id => $(id).addEventListener('change', () => {
     updateSumIndicator();
     if (!$('report').textContent.startsWith('سيظهر') && !$('report').textContent.startsWith('يوجد')) generate();
   }));
