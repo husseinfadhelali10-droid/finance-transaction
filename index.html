@@ -296,8 +296,27 @@
     display: flex; gap: 8px; align-items: center; margin-top: 10px;
     font-size: 14px; color: var(--muted); flex-wrap: wrap;
   }
-  .sum-indicator.ok { color: var(--success); }
-  .sum-indicator.bad { color: var(--danger); }
+  .sum-status {
+    display: none;
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 15px; font-weight: 800;
+    align-items: center; gap: 8px;
+    border: 2px solid;
+  }
+  .sum-status.show { display: flex; }
+  .sum-status.ok {
+    color: #065f46;
+    background: #d1fae5;
+    border-color: #10b981;
+  }
+  .sum-status.bad {
+    color: #7f1d1d;
+    background: #fee2e2;
+    border-color: #ef4444;
+  }
+  .sum-status .icon { font-size: 18px; }
 
   /* Sticky bottom action bar for mobile */
   .mobile-bar {
@@ -422,6 +441,10 @@
 
         <div class="sum-indicator" id="sum-ind">
           <span>مجموع الأقسام: <b id="sum-val">0</b>$ • الإجمالي المدخل: <b id="tot-val">0</b>$</span>
+        </div>
+        <div class="sum-status" id="sum-status">
+          <span class="icon" id="sum-status-icon"></span>
+          <span id="sum-status-text"></span>
         </div>
       </div>
 
@@ -593,7 +616,7 @@
     if (!data.segments.length) errs.push('فعّل فرعًا واحدًا على الأقل');
     data.segments.forEach(s => { if (s.usd <= 0) errs.push(`أدخل مبلغ "${s.label}"`); });
     if (data.totalUsd && data.sumUsd && Math.abs(data.totalUsd - data.sumUsd) > 0.5) {
-      errs.push(`المجموع (${fmt(data.sumUsd)}$) ≠ الإجمالي (${fmt(data.totalUsd)}$)`);
+      errs.push(`الأرقام غير متطابقة — مجموع الأقسام ${fmt(data.sumUsd)}$ ≠ الإجمالي ${fmt(data.totalUsd)}$`);
     }
     return errs;
   }
@@ -686,8 +709,21 @@
     $('tot-val').textContent = fmtUsd(tot);
     const ind = $('sum-ind');
     ind.classList.remove('ok','bad');
-    if (tot && sum && Math.abs(sum - tot) < 0.5) ind.classList.add('ok');
-    else if (tot && sum) ind.classList.add('bad');
+    const status = $('sum-status');
+    const statusIcon = $('sum-status-icon');
+    const statusText = $('sum-status-text');
+    status.classList.remove('show','ok','bad');
+    if (tot && sum && Math.abs(sum - tot) < 0.5) {
+      ind.classList.add('ok');
+      status.classList.add('show','ok');
+      statusIcon.textContent = '✓';
+      statusText.textContent = 'الأرقام متطابقة';
+    } else if (tot && sum) {
+      ind.classList.add('bad');
+      status.classList.add('show','bad');
+      statusIcon.textContent = '✕';
+      statusText.textContent = 'الأرقام غير متطابقة';
+    }
   }
 
   function generate() {
